@@ -67,7 +67,7 @@ const App = () => {
         // color: '#010101',
       }}
     >
-      <h1>Phonebook 06</h1>
+      <h1>Phonebook</h1>
       <ContactForm onSubmit={addContact} />
       <Filter onChange={filterContacts} />
       <h2 style={{ marginBottom: '0' }}>Contacts</h2>
