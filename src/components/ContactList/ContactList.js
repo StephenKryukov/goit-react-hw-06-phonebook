@@ -1,30 +1,25 @@
 import { ContactListItem } from './ContactListItem';
 import s from './ContactList.module.css';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
-export const ContactList = ({ contacts, onDelete }) => {
+const getVisibleContacts = (items, filter) =>
+  items.filter(contact =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
+  );
+
+export const ContactList = () => {
+  const items = useSelector(state => state.contacts.items);
+  const filter = useSelector(state => state.contacts.filter);
+  const contacts = getVisibleContacts(items, filter);
   return (
     <ul className={s.list}>
-      {contacts.map(({ name, number, id }) => (
-        <ContactListItem
-          key={id}
-          name={name}
-          number={number}
-          id={id}
-          onDelete={onDelete}
-        />
-      ))}
+      {contacts.length ? (
+        contacts.map(({ name, number, id }) => (
+          <ContactListItem key={id} name={name} number={number} id={id} />
+        ))
+      ) : (
+        <p className={s.text}>The list is empty</p>
+      )}
     </ul>
   );
-};
-
-ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  onDelete: PropTypes.func.isRequired,
 };
